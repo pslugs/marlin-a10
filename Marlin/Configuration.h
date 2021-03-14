@@ -127,7 +127,7 @@
 
 // Choose the name from boards.h that matches your setup
 #ifndef MOTHERBOARD
-  #define MOTHERBOARD BOARD_GT2560_V3 // PETER: V3 can be used for V4
+  #define MOTHERBOARD BOARD_GT2560_V4_PETER // PETER
 #endif
 
 // Name displayed in the LCD "Ready" message and Info menu
@@ -424,8 +424,8 @@
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
 #define TEMP_SENSOR_BED 1 // PETER
-#define TEMP_SENSOR_PROBE 0
-#define TEMP_SENSOR_CHAMBER 0
+#define TEMP_SENSOR_PROBE 1 // PETER
+#define TEMP_SENSOR_CHAMBER 1 // PETER
 
 // Dummy thermistor constant temperature readings, for use with 998 and 999
 #define DUMMY_THERMISTOR_998_VALUE 25
@@ -882,7 +882,7 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-//#define FIX_MOUNTED_PROBE
+#define FIX_MOUNTED_PROBE
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -893,8 +893,8 @@
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
  */
-#define Z_PROBE_SERVO_NR 0 // PETER
-#define Z_SERVO_ANGLES { 70, 5 } // PETER
+//#define Z_PROBE_SERVO_NR 0 // PETER DIY PROBE
+//#define Z_SERVO_ANGLES { 70, 5 } // PETER DIY PROBE
 
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
@@ -986,7 +986,7 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6
+#define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - DIY PROBE
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
@@ -2417,7 +2417,7 @@
  * Set to 0 to turn off servo support.
  */
 // Servo index starts with 0 for M280 command
-#define NUM_SERVOS 1 // PETER
+#define NUM_SERVOS 0 // PETER DIY PROBE = 1
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.

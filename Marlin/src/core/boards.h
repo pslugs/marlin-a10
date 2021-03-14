@@ -150,6 +150,7 @@
 #define BOARD_PICA_REVB               1322  // PICA Shield (original version)
 #define BOARD_PICA                    1323  // PICA Shield (rev C or later)
 #define BOARD_INTAMSYS40              1324  // Intamsys 4.0 (Funmat HT)
+#define BOARD_GT2560_V4_PETER         1325  // Geeetech GT2560 V4.0 for PETER A10
 
 //
 // ATmega1281, ATmega2561
