@@ -20,6 +20,7 @@
  *
  */
 #pragma once
+#include "PeterConf.h"
 
 /**
  * Configuration_adv.h

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "..\..\..\PeterConf.h"
+
 /**
  * GT2560_V4.0 for PETER A10
  */
@@ -102,7 +104,9 @@
 #define TEMP_1_PIN                             9  // Analog Input
 #define TEMP_2_PIN                             8  // Analog Input
 #define TEMP_BED_PIN                          10  // Analog Input
+#if PETER_INDUCTIVE
 #define TEMP_PROBE_PIN TEMP_1_PIN // PETER INDUCTIVE PROBE
+#endif
 #define TEMP_CHAMBER_PIN TEMP_2_PIN // PETER
 
 //

@@ -20,6 +20,7 @@
  *
  */
 #pragma once
+#include "PeterConf.h"
 
 /**
  * Configuration.h
@@ -424,8 +425,12 @@
 #define TEMP_SENSOR_6 0
 #define TEMP_SENSOR_7 0
 #define TEMP_SENSOR_BED 1 // PETER
-#define TEMP_SENSOR_PROBE 1 // PETER
-#define TEMP_SENSOR_CHAMBER 1 // PETER
+#if PETER_INDUCTIVE
+#define TEMP_SENSOR_PROBE 1 // PETER INDUCTIVE PROBE
+#else
+#define TEMP_SENSOR_PROBE 0 // PETER !INDUCTIVE PROBE
+#endif
+#define TEMP_SENSOR_CHAMBER 1 // PETER ENCLOSURE
 
 // Dummy thermistor constant temperature readings, for use with 998 and 999
 #define DUMMY_THERMISTOR_998_VALUE 25
@@ -660,7 +665,7 @@
 #define X_MAX_ENDSTOP_INVERTING true
 #define Y_MAX_ENDSTOP_INVERTING true
 #define Z_MAX_ENDSTOP_INVERTING true
-#define Z_MIN_PROBE_ENDSTOP_INVERTING false // PETER: true -> false
+#define Z_MIN_PROBE_ENDSTOP_INVERTING false // PETER PROBE: true -> false
 
 /**
  * Stepper Drivers
@@ -882,7 +887,9 @@
  * A Fix-Mounted Probe either doesn't deploy or needs manual deployment.
  *   (e.g., an inductive probe or a nozzle-based probe-switch.)
  */
-#define FIX_MOUNTED_PROBE
+#if PETER_INDUCTIVE
+#define FIX_MOUNTED_PROBE // PETER INDUCTIVE PROBE
+#endif
 
 /**
  * Use the nozzle as the probe, as with a conductive
@@ -893,8 +900,10 @@
 /**
  * Z Servo Probe, such as an endstop switch on a rotating arm.
  */
-//#define Z_PROBE_SERVO_NR 0 // PETER DIY PROBE
-//#define Z_SERVO_ANGLES { 70, 5 } // PETER DIY PROBE
+#if PETER_BFPTOUCH
+#define Z_PROBE_SERVO_NR 0 // PETER BFPTOUCH
+#define Z_SERVO_ANGLES { 70, 5 } // PETER BFPTOUCH
+#endif
 
 /**
  * The BLTouch probe uses a Hall effect sensor and emulates a servo.
@@ -986,11 +995,19 @@
  *     |    [-]    |
  *     O-- FRONT --+
  */
-#define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - DIY PROBE
+#if PETER_BFPTOUCH
+#define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - BFPTOUCH
+#elif PETER_INDUCTIVE
+#define NOZZLE_TO_PROBE_OFFSET { -32, -12.5, -0.72 } // PETER E3D V6 - INDUCTIVE PROBE
+#endif
 
 // Most probes should stay away from the edges of the bed, but
 // with NOZZLE_AS_PROBE this can be negative for a wider probing area.
-#define PROBING_MARGIN 10
+#if PETER_BFPTOUCH
+#define PROBING_MARGIN 10 // PETER BFPTOUCH
+#elif PETER_INDUCTIVE
+#define PROBING_MARGIN 30 // PETER INDUCTIVE PROBE
+#endif
 
 // X and Y axis travel speed (mm/min) between probes
 #define XY_PROBE_SPEED (133*60)
@@ -1010,7 +1027,7 @@
  * A total of 2 does fast/slow probes with a weighted average.
  * A total of 3 or more adds more slow probes, taking the average.
  */
-#define MULTIPLE_PROBING 2 // PETER
+#define MULTIPLE_PROBING 2 // PETER PROBE
 //#define EXTRA_PROBING    1
 
 /**
@@ -1028,22 +1045,27 @@
  *     But: `M851 Z+1` with a CLEARANCE of 2  =>  2mm from bed to nozzle.
  */
 // Z Clearance for Deploy/Stow
-#define Z_CLEARANCE_DEPLOY_PROBE   10 // PETER
+#define Z_CLEARANCE_DEPLOY_PROBE   10 // PETER PROBE
 // Z Clearance between probe points
-#define Z_CLEARANCE_BETWEEN_PROBES  5 // PETER
+#define Z_CLEARANCE_BETWEEN_PROBES  5 // PETER PROBE
 // Z Clearance between multiple probes
-#define Z_CLEARANCE_MULTI_PROBE     5 // PETER
+#define Z_CLEARANCE_MULTI_PROBE     5 // PETER PROBE
 // Z position after probing is done
-#define Z_AFTER_PROBING           5 // PETER
+#define Z_AFTER_PROBING           5 // PETER PROBE
 
-#define Z_PROBE_LOW_POINT          -2 // Farthest distance below the trigger-point to go before stopping
+// Farthest distance below the trigger-point to go before stopping
+#if PETER_BFPTOUCH
+#define Z_PROBE_LOW_POINT          -2 // PETER BFPTOUCH
+#elif PETER_INDUCTIVE
+#define Z_PROBE_LOW_POINT          -4 // PETER INDUCTIVE PROBE
+#endif
 
 // For M851 give a range for adjusting the Z probe offset
-#define Z_PROBE_OFFSET_RANGE_MIN -5 // PETER
-#define Z_PROBE_OFFSET_RANGE_MAX 5 // PETER
+#define Z_PROBE_OFFSET_RANGE_MIN -5 // PETER PROBE
+#define Z_PROBE_OFFSET_RANGE_MAX 5 // PETER PROBE
 
 // Enable the M48 repeatability test to test probe accuracy
-#define Z_MIN_PROBE_REPEATABILITY_TEST // PETER
+#define Z_MIN_PROBE_REPEATABILITY_TEST // PETER PROBE
 
 // Before deploy/stow pause for user confirmation
 //#define PAUSE_BEFORE_DEPLOY_STOW
@@ -1097,7 +1119,7 @@
 // @section extruder
 
 // For direct drive extruder v9 set to true, for geared extruder set to false.
-#define INVERT_E0_DIR true // PETER
+#define INVERT_E0_DIR true // PETER A4988
 //#define INVERT_E0_DIR (!true) // PETER TMC2208
 // unused, the A10 only has one extruder by default
 #define INVERT_E1_DIR false
@@ -1116,7 +1138,7 @@
 
 // (mm) Minimal Z height before homing (G28) for Z clearance above the bed, clamps, ...
 // Be sure to have this much clearance over your Z_MAX_POS to prevent grinding.
-#define Z_HOMING_HEIGHT 5 // PETER
+#define Z_HOMING_HEIGHT 5 // PETER BED CLAMPS
 
 // (mm) Height to move to after homing Z
 //#define Z_AFTER_HOMING 10
@@ -1242,7 +1264,7 @@
  */
 //#define AUTO_BED_LEVELING_3POINT
 //#define AUTO_BED_LEVELING_LINEAR
-#define AUTO_BED_LEVELING_BILINEAR // PETER
+#define AUTO_BED_LEVELING_BILINEAR // PETER LEVELING
 //#define AUTO_BED_LEVELING_UBL
 //#define MESH_BED_LEVELING
 
@@ -1274,7 +1296,7 @@
   /**
    * Enable the G26 Mesh Validation Pattern tool.
    */
-  #define G26_MESH_VALIDATION // PETER
+  #define G26_MESH_VALIDATION // PETER LEVELING
   #if ENABLED(G26_MESH_VALIDATION)
     #define MESH_TEST_NOZZLE_SIZE    0.4  // (mm) Diameter of primary nozzle.
     #define MESH_TEST_LAYER_HEIGHT   0.2  // (mm) Default layer height for the G26 Mesh Validation Tool.
@@ -1289,7 +1311,7 @@
 #if EITHER(AUTO_BED_LEVELING_LINEAR, AUTO_BED_LEVELING_BILINEAR)
 
   // Set the number of grid points per dimension.
-  #define GRID_MAX_POINTS_X 3 // PETER
+  #define GRID_MAX_POINTS_X 3 // PETER LEVELING
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Probe along the Y axis, advancing X after each column
@@ -1393,7 +1415,9 @@
 // - Move the Z probe (or nozzle) to a defined XY point before Z Homing.
 // - Prevent Z homing when the Z probe is outside bed area.
 //
-#define Z_SAFE_HOMING // PETER 
+#if PETER_PROBE
+#define Z_SAFE_HOMING // PETER PROBE
+#endif
 
 #if ENABLED(Z_SAFE_HOMING)
   #define Z_SAFE_HOMING_X_POINT X_CENTER  // X point for Z homing
@@ -1768,13 +1792,13 @@
 // This option overrides the default number of encoder pulses needed to
 // produce one step. Should be increased for high-resolution encoders.
 //
-#define ENCODER_PULSES_PER_STEP 3 // PETER reprapdiscount
+#define ENCODER_PULSES_PER_STEP 3 // PETER REPRAPDISCOUNT
 
 //
 // Use this option to override the number of step signals required to
 // move between next/prev menu items.
 //
-#define ENCODER_STEPS_PER_MENU_ITEM 1 // PETER reprapdiscount
+#define ENCODER_STEPS_PER_MENU_ITEM 1 // PETER REPRAPDISCOUNT
 
 /**
  * Encoder Direction Options
@@ -1995,7 +2019,7 @@
 // RepRapDiscount FULL GRAPHIC Smart Controller
 // https://reprap.org/wiki/RepRapDiscount_Full_Graphic_Smart_Controller
 //
-#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER  // PETER reprapdiscount
+#define REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER  // PETER REPRAPDISCOUNT
 
 //
 // ReprapWorld Graphical LCD
@@ -2417,7 +2441,11 @@
  * Set to 0 to turn off servo support.
  */
 // Servo index starts with 0 for M280 command
-#define NUM_SERVOS 0 // PETER DIY PROBE = 1
+#if PETER_BFPTOUCH
+#define NUM_SERVOS 1 // PETER BFPTOUCH
+#else
+#define NUM_SERVOS 0 // PETER !BFPTOUCH
+#endif
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
 // 300ms is a good value but you can try less delay.
