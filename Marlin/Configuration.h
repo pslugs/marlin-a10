@@ -903,6 +903,9 @@
 #if PETER_BFPTOUCH
 #define Z_PROBE_SERVO_NR 0 // PETER BFPTOUCH
 #define Z_SERVO_ANGLES { 70, 5 } // PETER BFPTOUCH
+#elif PETER_ROBSCAR
+#define Z_PROBE_SERVO_NR 0 // PETER ROBSCAR
+#define Z_SERVO_ANGLES { 70, 20 } // PETER ROBSCAR
 #endif
 
 /**
@@ -999,6 +1002,8 @@
 #define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - BFPTOUCH
 #elif PETER_INDUCTIVE
 #define NOZZLE_TO_PROBE_OFFSET { -32, -12.5, -0.72 } // PETER E3D V6 - INDUCTIVE PROBE
+#elif PETER_ROBSCAR
+#define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - ROBSCAR
 #endif
 
 // Most probes should stay away from the edges of the bed, but
@@ -1007,6 +1012,8 @@
 #define PROBING_MARGIN 10 // PETER BFPTOUCH
 #elif PETER_INDUCTIVE
 #define PROBING_MARGIN 30 // PETER INDUCTIVE PROBE
+#elif PETER_ROBSCAR
+#define PROBING_MARGIN 10 // PETER ROBSCAR
 #endif
 
 // X and Y axis travel speed (mm/min) between probes
@@ -1058,6 +1065,8 @@
 #define Z_PROBE_LOW_POINT          -2 // PETER BFPTOUCH
 #elif PETER_INDUCTIVE
 #define Z_PROBE_LOW_POINT          -4 // PETER INDUCTIVE PROBE
+#elif PETER_ROBSCAR
+#define Z_PROBE_LOW_POINT          -2 // PETER ROBSCAR
 #endif
 
 // For M851 give a range for adjusting the Z probe offset
@@ -2443,8 +2452,10 @@
 // Servo index starts with 0 for M280 command
 #if PETER_BFPTOUCH
 #define NUM_SERVOS 1 // PETER BFPTOUCH
+#elif PETER_ROBSCAR
+#define NUM_SERVOS 1 // PETER ROBSCAR
 #else
-#define NUM_SERVOS 0 // PETER !BFPTOUCH
+#define NUM_SERVOS 0 // PETER (no servo probe)
 #endif
 
 // (ms) Delay  before the next move will start, to give the servo time to reach its target angle.
