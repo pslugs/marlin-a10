@@ -906,6 +906,9 @@
 #elif PETER_ROBSCAR
 #define Z_PROBE_SERVO_NR 0 // PETER ROBSCAR
 #define Z_SERVO_ANGLES { 70, 20 } // PETER ROBSCAR
+#elif PETER_SERVOSWITCH
+#define Z_PROBE_SERVO_NR 0 // PETER SERVOSWITCH
+#define Z_SERVO_ANGLES { 83, 0 } // PETER SERVOSWITCH
 #endif
 
 /**
@@ -1004,6 +1007,8 @@
 #define NOZZLE_TO_PROBE_OFFSET { -32, -12.5, -0.72 } // PETER E3D V6 - INDUCTIVE PROBE
 #elif PETER_ROBSCAR
 #define NOZZLE_TO_PROBE_OFFSET { -33, -12, -0.72 } // PETER E3D V6 - ROBSCAR
+#elif PETER_SERVOSWITCH
+#define NOZZLE_TO_PROBE_OFFSET { -22, -8, 0 } // PETER E3D V6 - SERVOSWITCH
 #endif
 
 // Most probes should stay away from the edges of the bed, but
@@ -1014,6 +1019,8 @@
 #define PROBING_MARGIN 30 // PETER INDUCTIVE PROBE
 #elif PETER_ROBSCAR
 #define PROBING_MARGIN 10 // PETER ROBSCAR
+#elif PETER_SERVOSWITCH
+#define PROBING_MARGIN 15 // PETER SERVOSWITCH
 #endif
 
 // X and Y axis travel speed (mm/min) between probes
@@ -1061,12 +1068,10 @@
 #define Z_AFTER_PROBING           5 // PETER PROBE
 
 // Farthest distance below the trigger-point to go before stopping
-#if PETER_BFPTOUCH
-#define Z_PROBE_LOW_POINT          -2 // PETER BFPTOUCH
+#if PETER_BFPTOUCH || PETER_ROBSCAR || PETER_SERVOSWITCH
+#define Z_PROBE_LOW_POINT          -2 // PETER BFPTOUCH | ROBSCAR | SERVOSWITCH
 #elif PETER_INDUCTIVE
 #define Z_PROBE_LOW_POINT          -4 // PETER INDUCTIVE PROBE
-#elif PETER_ROBSCAR
-#define Z_PROBE_LOW_POINT          -2 // PETER ROBSCAR
 #endif
 
 // For M851 give a range for adjusting the Z probe offset
@@ -2450,10 +2455,8 @@
  * Set to 0 to turn off servo support.
  */
 // Servo index starts with 0 for M280 command
-#if PETER_BFPTOUCH
-#define NUM_SERVOS 1 // PETER BFPTOUCH
-#elif PETER_ROBSCAR
-#define NUM_SERVOS 1 // PETER ROBSCAR
+#if PETER_BFPTOUCH || PETER_ROBSCAR || PETER_SERVOSWITCH
+#define NUM_SERVOS 1 // PETER BFPTOUCH | ROBSCAR | SERVOSWITCH
 #else
 #define NUM_SERVOS 0 // PETER (no servo probe)
 #endif
