@@ -1,3 +1,11 @@
+# Marlin - A10
+
+Marlin with changes for my modified Geeetech A10.
+
+Not suited for a default Geeetech A10 (check the official marlin page or github for that), since it expects parts like an E3D hotend, microswitch servo probe, etc...
+
+(original marlin readme below this line)
+
 # Marlin 3D Printer Firmware
 
 ![GitHub](https://img.shields.io/github/license/marlinfirmware/marlin.svg)
